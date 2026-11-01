@@ -1,5 +1,7 @@
 ---
 tags: meta/library
+name: Library/dtomvan/Tasks Dashboard
+description: Widget that shows the amount of outstanding tasks
 ---
 # Tasks Dashboard
 
