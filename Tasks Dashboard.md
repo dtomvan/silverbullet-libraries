@@ -57,6 +57,8 @@ templates.tasksPerDate = template.new[==[
 ${table.concat(query[[from t = tasks order by t.due select templates.taskItem(t)]])}
 ]==]
 
+templates.taskItemWithDue = template.new [==[- [[${ref}|${name}]]: due by **[[${due}]]**]==]
+
 queries = queries or {}
 
 function queries.missedTasks()
@@ -65,6 +67,15 @@ function queries.missedTasks()
     where not t.done and t.due != nil and t.due < date.today()
     order by t.due asc
     select templates.taskItem(t)
+  ]]
+end
+
+function queries.tasksUrgent()
+  return query[[
+    from t = index.tasks()
+    where not t.done and t.due != nil and table.includes(t.tags, "urgent")
+    order by t.due asc
+    select templates.taskItemWithDue(t)
   ]]
 end
 
@@ -126,6 +137,14 @@ local categories = {
     command = "Tasks: Missed",
     tone = "warning",
     q = queries.missedTasks
+    },
+  {
+    viewName = "my.tasks.urgent",
+    statName = "urgent",
+    title = "Urgent tasks",
+    command = "Tasks: Urgent",
+    tone = "danger",
+    q = queries.tasksUrgent
     },
   {
     viewName = "my.tasks.today",
