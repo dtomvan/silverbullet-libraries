@@ -3,11 +3,13 @@ tags: meta/library
 name: Library/dtomvan/Tasks Dashboard
 description: Widget that shows the amount of outstanding tasks
 ---
+
 # Tasks Dashboard
 
 Simple tasks dashboard, leveraging the new [stats widgets](https://github.com/silverbulletmd/silverbullet-libraries/blob/main/Library/silverbulletmd/Dashboard.md) from the Dashboard library.
 
 Adds several views as commands to the editor:
+
 - ${widgets.commandButton "Tasks: All"}
 - ${widgets.commandButton "Tasks: Missed"}
 - ${widgets.commandButton "Tasks: Today"}
@@ -17,8 +19,11 @@ Adds several views as commands to the editor:
 And also the `widgets.tasksOverview()` widget. This one requires installing the Dashboard library also, but the widget will give you a convenient little button to do so.
 
 ## Demo
-![[Library/dtomvan/2026-11-01 20-04-07.mp4]]
+
+![](https://github.com/dtomvan/silverbullet-libraries/raw/refs/heads/main/2026-11-01%2020-04-07.mp4)
+
 ## Usage
+
 In some convenient page (like your ${widgets.commandButton("Index", "Navigate: Home")}), add:
 
 ```markdown
@@ -26,8 +31,9 @@ ${widgets.tasksOverview()}
 ```
 
 ## Customization
+
 The views can be customized as sidebars, if so desired, as usual, with [`view.defaults`](https://docs.silverbullet.md/Library/Std/Config):
-    
+
 ```lua
 config.set("view.defaults", {
   ["my.tasks.today"] = {
@@ -41,7 +47,9 @@ config.set("view.defaults", {
 ```
 
 ## Implementation
+
 ### Queries and templates necessary
+
 ```space-lua
 templates = templates or {}
 templates.tasksPerDate = template.new[==[
@@ -95,8 +103,8 @@ function queries.tasksFutureGrouped()
 end
 ```
 
-
 ### Install Dashboard function
+
 ```space-lua
 function installDashboard()
   local ok = pcall(share.install, "https://github.com/silverbulletmd/silverbullet-libraries/blob/main/Library/silverbulletmd/Dashboard.md")
@@ -108,6 +116,7 @@ end
 ```
 
 ### The views, commands, and Dashboard widget
+
 ```space-lua
 local categories = {
   {
@@ -172,7 +181,7 @@ function widgets.tasksOverview()
   if not widgets.stat then
     return widget.markdownBlock([[**Error:** `widgets.stat` is not available. Did you ${widgets.button("Install", installDashboard)} the Dashboard library?]])
   end
-  
+
   local cells = {}
 
   for i, c in ipairs(categories) do
@@ -188,7 +197,8 @@ function widgets.tasksOverview()
       }))
     end
   end
-  
+
   return widgets.grid(cells)
 end
 ```
+
